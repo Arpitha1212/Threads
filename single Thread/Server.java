@@ -18,8 +18,12 @@ public class Server {
             Socket acceptedConnection = serverSocket.accept();
             System.out.println("Connection accepted from client : " + acceptedConnection.getRemoteSocketAddress());
             PrintWriter toClient = new PrintWriter(acceptedConnection.getOutputStream());
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(acceptedConnection.getInputStream()));
-            } catch (IOException e) {
+            BufferedReader fromClient = new BufferedReader(new InputStreamReader(acceptedConnection.getInputStream()));
+            toClient.println("Hello from server...");
+            toClient.close();
+            fromClient.close();
+            acceptedConnection.close();
+              } catch (IOException e) {
                 e.printStackTrace();
             }
            
@@ -27,6 +31,11 @@ public class Server {
     }
     
     public static void main(String[] args){
-
+        try {
+            Server server = new Server();
+            server.run();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
